@@ -1,13 +1,14 @@
-/// Get Refrences To Form and Display Area
-var form2 = document.getElementById('resume-form');
-var displayArea2 = document.getElementById('resume-display');
+// Get References To Form and Display Area
+var form = document.getElementById('resume-form');
+var displayArea = document.getElementById('resume-display');
 var shareableLinkContainer = document.getElementById('shareable-link-container');
 var shareableLink = document.getElementById('shareable-link');
-var downloadPdfBotton = document.getElementById('download-pdf');
+var downloadPdfButton = document.getElementById('download-pdf');
 // Handle Form Submission
-form2.addEventListener('submit', function (event) {
-    event.preventDefault(); //prevent page reload
-    // Input Collection
+form.addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent page reload
+    console.log('Form submitted. Preventing default action.');
+    // Collect Form Data
     var username = document.getElementById('username').value;
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
@@ -16,8 +17,8 @@ form2.addEventListener('submit', function (event) {
     var education = document.getElementById('education').value;
     var experience = document.getElementById('experience').value;
     var skills = document.getElementById('skills').value;
-    // save form data in local storage with the username as the key
-    var resumedata = {
+    // Save Data to Local Storage
+    var resumeData = {
         username: username,
         name: name,
         email: email,
@@ -27,32 +28,29 @@ form2.addEventListener('submit', function (event) {
         experience: experience,
         skills: skills
     };
-    localStorage.setItem(username, JSON.stringify(resumedata)); // saving the data locally
-    // Generate the resume content dynamically
-    var resumeContent = "\n\n<h2>Sheareable Resume</h2>\n<h3>Personal Information</h3>\n<p><b>Name:</b> <span contenteditable=\"true\">".concat(name, "</span></p>\n<p><b>Email:</b> <span contenteditable=\"true\">").concat(email, "</span></p>\n<p><b>Phone:</b> <span contenteditable=\"true\">").concat(phone, "</span></p>\n<h3>Education</h3>\n<p contenteditable=\"true\">").concat(education, "</p>\n<h3>Experience</h3>\n<p contenteditable=\"true\">").concat(experience, "</p>\n<h3>Skills</h3>\n<p contenteditable=\"true\">").concat(skills, "</p>\n");
+    localStorage.setItem(username, JSON.stringify(resumeData)); //saving data locally
+    // Generate and Display Resume Content
+    var resumeContent = "\n        <h2>Shareable Resume</h2>\n        <h3>Personal Information</h3>\n        <p><b>Name:</b> <span contenteditable =\"true\"> ".concat(name, "</span></p>\n        <p><b>Email:</b><span contenteditable =\"true\"> ").concat(email, "</span></p>\n        <p><b>Phone:</b><span contenteditable =\"true\"> ").concat(phone, "</span></p>\n        <p><b>Address:</b> ").concat(address, "</span></p>\n        \n        <h3>Education</h3>\n        <p contenteditable =\"true\">").concat(education, "</p>\n        \n        <h3>Experience</h3>\n        <p contenteditable =\"true\">").concat(experience, "</p>\n        \n        <h3>Skills</h3>\n        <p contenteditable =\"true\">").concat(skills, "</p>\n    ");
     // Display the generated resume
-    displayArea2.innerHTML = resumeContent;
-    // Generate a shareable URL with the username only
+    displayArea.innerHTML = resumeContent;
+    // Create and Display Shareable URL With Username Only
     var shareableURL = "".concat(window.location.origin, "?username=").concat(encodeURIComponent(username));
-    // Display the shareable link
-    shareableLinkContainer.style.display = 'block';
     shareableLink.href = shareableURL;
     shareableLink.textContent = shareableURL;
+    shareableLinkContainer.style.display = 'block';
 });
-// Handle PDF download
-downloadPdfBotton.addEventListener('click', function () {
-    window.print(); // This will open the print dialog and allow the user to save
-    //as PDF
+// handle PDF download
+downloadPdfButton.addEventListener('click', function () {
+    window.print();
 });
-// Prefill the form based on the username in the URL
+// Prefill The Form Based On Username In URl
 window.addEventListener('DOMContentLoaded', function () {
-    var urlParams = new URLSearchParams(window.location.search);
-    var username = urlParams.get('username');
+    var URLParams = new URLSearchParams(window.location.search);
+    var username = URLParams.get('username');
     if (username) {
-        // Autofill form if data is found in localStorage
-        var savedResumeData = localStorage.getItem(username);
-        if (savedResumeData) {
-            var resumeData = JSON.parse(savedResumeData);
+        var storedResumeData = localStorage.getItem(username);
+        if (storedResumeData) {
+            var resumeData = JSON.parse(storedResumeData);
             document.getElementById('username').value =
                 username;
             document.getElementById('name').value =
